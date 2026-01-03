@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise</title>
+<style>
+  body {
+    margin:0;
+    padding:0;
+    font-family:'Segoe UI',sans-serif;
+    background:#000;
+    color:#fff;
+    overflow:hidden;
+  }
+  .page {
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    transition:all 0.5s ease;
+  }
+  .hidden { display:none; }
+  .name { font-size:2em; text-align:center; }
+  #timer { margin-top:10px; font-size:1.2em; }
+  .cake-container { position:relative; width:200px; height:200px; margin-bottom:20px; }
+  .cake { width:200px; height:120px; background:#ff4d4d; border-radius:0 0 20px 20px; position:absolute; bottom:0; }
+  .candle { width:10px; height:30px; background:yellow; position:absolute; top:-30px; border-radius:5px; }
+  .knife { width:10px; height:80px; background:red; position:absolute; top:-20px; left:95px; cursor:pointer; transition:all 0.3s ease; }
+  button { padding:10px 20px; font-size:1em; cursor:pointer; margin-top:20px; }
+  .tabs { display:flex; margin-bottom:20px; flex-wrap:wrap; justify-content:center; }
+  .tab { padding:10px 15px; border:1px solid #fff; margin:0 5px; cursor:pointer; border-radius:5px; }
+  #box { width:90%; max-width:600px; text-align:left; padding:10px; font-size:1em; line-height:1.5em; background:rgba(255,255,255,0.05); border-radius:10px; white-space:pre-line; }
+</style>
+</head>
+<body>
+
+<canvas id="fw"></canvas>
+
+<!-- PAGE 1 -->
+<div id="p1" class="page">
+  <div class="name">Happy Birthday ❤️ Devyani (shampy) ❤️</div>
+  <p id="timer">Countdown starting...</p>
+</div>
+
+<!-- PAGE 2 -->
+<div id="p2" class="page hidden">
+  <div class="cake-container">
+    <div class="cake" id="cake"></div>
+    <div class="candle" style="left:40px;"></div>
+    <div class="candle" style="left:90px;"></div>
+    <div class="candle" style="left:140px;"></div>
+    <div class="knife" id="knife"></div>
+  </div>
+  <button id="continueBtn" onclick="openTabs()" style="display:none;">Continue 🎁</button>
+</div>
+
+<!-- PAGE 3 -->
+<div id="p3" class="page hidden">
+  <div class="tabs">
+    <div class="tab" onclick="show('photo')">📸 Photos</div>
+    <div class="tab" onclick="show('voice')">🎧 Voice</div>
+    <div class="tab" onclick="show('letter')">📜 Letter</div>
+    <div class="tab" onclick="show('promise')">🤞 Promise</div>
+  </div>
+  <div id="box" class="content"></div>
+</div>
+
+<script>
+// GET PAGES
+const p1 = document.getElementById("p1");
+const p2 = document.getElementById("p2");
+const p3 = document.getElementById("p3");
+
+// COUNTDOWN
+let t = 30; // 30 seconds countdown
+let timer = setInterval(() => {
+  document.getElementById("timer").innerText = `Cake cutting in ${t} 🕒`;
+  t--;
+  if(t < 0){
+    clearInterval(timer);
+    p1.classList.add("hidden");
+    p2.classList.remove("hidden");
+  }
+},1000);
+
+// OPEN TABS
+function openTabs(){
+  p2.classList.add("hidden");
+  p3.classList.remove("hidden");
+  show('letter'); // automatically start typing letter
+  setTimeout(() => show('promise'), 15000); // after 15 sec, start typing promise automatically
+}
+
+// TYPING EFFECT FUNCTION
+function typeText(element, text, speed=30){
+  element.innerHTML = '';
+  let i=0;
+  const interval = setInterval(()=>{
+    if(i<text.length){
+      element.innerHTML += text[i];
+      i++;
+      element.scrollTop = element.scrollHeight; // auto scroll
+    } else {
+      clearInterval(interval);
+    }
+  },speed);
+}
+
+// SHOW CONTENT
+function show(x){
+  const b = document.getElementById("box");
+  
+  if(x === "photo") {
+    b.innerHTML = "Your photos go here 📸";
+  }
+  if(x === "voice") {
+    b.innerHTML = "Voice message coming soon 🎧";
+  }
+  if(x === "letter") {
+    const letter = `
+My Dearest Devyani ❤️,
+
+Today, after everything we went through, I want to tell you how much you mean to me. Even in our fights, even in the moments when we misunderstood each other, my heart never wavered. You are my world, my safe place, my happiness. I might make mistakes, I might say things I don’t mean, but my love for you is endless, eternal, and unshakable.
+
+Every moment with you is a treasure. Every laugh, every smile, every tear we share brings me closer to you. I promise to hold your hand through every storm, to be your shoulder when you cry, and your strength when you feel weak. I will always fight for us, for our love, for our dreams together.
+
+I promise to communicate better, to listen more, to understand you even when it’s hard. I promise to choose patience over anger, understanding over frustration, and love above all else. I choose you every single day, without hesitation, without doubt.
+
+No matter what life throws at us, no matter the challenges, I promise to never give up on us. I promise to make you feel loved, cherished, and safe every single day. You are my heart, my soul, my everything. And I will love you until my last breath.
+
+I want to build a life with you full of laughter, adventures, and endless love. I want to hold your hand through every step, celebrate your victories, and comfort you in every sorrow. I want to make you feel as special as you truly are, because you deserve nothing less than all the happiness in the world.
+
+Forever yours,
+❤️ Shampy
+`;
+    typeText(b, letter, 20);
+  }
+  
+  if(x === "promise") {
+    const promise = `
+My Love ❤️,
+
+I promise to always choose you, in every fight, in every joy, in every moment of our lives. I promise to protect your heart as my own, to never let anything come between us, and to stand by you no matter what. Today, tomorrow, and for all the tomorrows after that, I am yours, and you are mine.
+
+I promise to laugh with you, cry with you, and grow with you. I promise to never stop trying, never stop loving, and never stop building the life we dream of together. I will cherish every second with you and remind you every day that you are my world, my forever, my everything.
+
+I promise to be your calm in the storm, your joy in the sorrow, your strength when you are weak, and your shelter in any darkness. I promise to love you for all that you are, and all that you will become. Nothing can ever change how deeply I feel for you. You are my heart, my soul, and my home.
+
+🤞 Forever your Shampy
+`;
+    typeText(b, promise, 20);
+  }
+}
+
+// CAKE CUTTING ANIMATION
+const knife = document.getElementById("knife");
+const cake = document.getElementById("cake");
+const continueBtn = document.getElementById("continueBtn");
+
+knife.onclick = () => {
+  knife.style.transform = "rotate(20deg) translateY(20px)";
+  cake.style.height = "60px"; // cake gets "cut"
+  setTimeout(() => {
+    continueBtn.style.display = "block"; // show continue
+  }, 500);
+};
+
+// FIREWORKS
+const canvas = document.getElementById("fw");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+window.onresize = () => {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+};
+
+class Particle {
+  constructor(x, y, color){
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.radius = Math.random()*3 + 2;
+    this.vx = (Math.random()-0.5)*4;
+    this.vy = (Math.random()-0.5)*4;
+    this.alpha = 1;
+  }
+  update(){
+    this.x += this.vx;
+    this.y += this.vy;
+    this.alpha -= 0.01;
+  }
+  draw(){
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius,0,Math.PI*2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+let particles = [];
+function createFirework(){
+  const x = Math.random()*canvas.width;
+  const y = Math.random()*canvas.height/2;
+  const colors = ['#ff2d95','#fffc00','#00ffe5','#ff6a00','#ff0055'];
+  for(let i=0;i<50;i++){
+    particles.push(new Particle(x,y,colors[Math.floor(Math.random()*colors.length)]));
+  }
+}
+
+function animate(){
+  ctx.fillStyle = "rgba(0,0,0,0.1)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.update();
+    p.draw();
+    if(p.alpha<=0) particles.splice(i,1);
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+setInterval(createFirework,500);
+
+</script>
+</body>
+  </html>
