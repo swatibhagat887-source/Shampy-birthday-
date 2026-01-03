@@ -14,15 +14,17 @@
     overflow:hidden;
   }
   .page {
-    position:absolute;
-    width:100%;
-    height:100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    transition:all 0.5s ease;
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  transition:all 0.5s ease;
+  z-index:1;
   }
+  
   .hidden { display:none; }
   .name { font-size:2em; text-align:center; }
   #timer { margin-top:10px; font-size:1.2em; }
@@ -38,7 +40,13 @@
 </head>
 <body>
 
-<canvas id="fw"></canvas>
+<canvas id="fw" style="
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:0;
+  pointer-events:none;
+"></canvas>
 
 <!-- PAGE 1 -->
 <div id="p1" class="page">
